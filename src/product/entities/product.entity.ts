@@ -34,6 +34,3 @@ export class Product {
   @UpdateDateColumn()
   updatedAt: Date;
 }
-
-//  @ManyToOne(() => User, (user) => user.photos)
-//     user: User
