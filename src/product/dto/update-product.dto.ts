@@ -6,4 +6,5 @@ export class UpdateProductDto extends PartialType(CreateProductDto) {
   description?: string | undefined;
   price?: number | undefined;
   stock?: number | undefined;
+  category?: string | undefined;
 }

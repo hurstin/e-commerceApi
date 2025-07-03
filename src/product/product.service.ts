@@ -4,11 +4,13 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
+import { CategoryService } from 'src/category/category.service';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product) private productsRepo: Repository<Product>,
+    private categoryService: CategoryService,
   ) {}
 
   async create(createProductDto: CreateProductDto) {
@@ -24,7 +26,23 @@ export class ProductService {
         'Product already exists with the same title and description',
       );
     }
-    const product = this.productsRepo.create(createProductDto);
+
+    // Assuming category is passed as an name in createProductDto
+    const { category, ...rest } = createProductDto as any;
+    let categoryEntity = null;
+    if (category) {
+      // You need to inject CategoryRepository to fetch the category entity
+      // For now, let's assume you have a categoriesRepo injected
+      categoryEntity = await (this as any).categoryService.findOne(category);
+      if (!categoryEntity) {
+        throw new BadRequestException('Category not found');
+      }
+    }
+
+    const product = this.productsRepo.create({
+      ...rest,
+      category: categoryEntity,
+    });
 
     //save to db
     return this.productsRepo.save(product);

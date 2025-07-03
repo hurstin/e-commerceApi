@@ -48,6 +48,13 @@ export class CategoryService {
     };
   }
 
+  async findOne(name: string) {
+    const category = await this.categoryRepo.findOne({ where: { name } });
+    if (!category) throw new BadRequestException('no category with this name');
+
+    return category;
+  }
+
   async findAll() {
     const category = await this.categoryRepo.find({
       relations: {
@@ -61,12 +68,25 @@ export class CategoryService {
     };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
-  }
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
+    if (!id || !updateCategoryDto)
+      throw new BadRequestException(
+        'id and product details are needed to update a product',
+      );
+    // check if category exist
+    const category = await this.categoryRepo.findOne({ where: { id } });
+    if (!category) throw new BadRequestException('No category with this id');
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+    // update the category
+    const updatedCategory = Object.assign(category, updateCategoryDto);
+
+    // save to db
+    this.categoryRepo.save(updatedCategory);
+
+    return {
+      message: `product with id ${id} updated successfully`,
+      category: updatedCategory,
+    };
   }
 
   remove(id: number) {
