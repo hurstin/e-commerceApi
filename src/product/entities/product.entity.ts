@@ -26,7 +26,7 @@ export class Product {
   stock: number;
 
   @ManyToOne(() => Category, (category) => category.products)
-  category: Category;
+  category: Category | null;
 
   @CreateDateColumn()
   createdAt: Date;

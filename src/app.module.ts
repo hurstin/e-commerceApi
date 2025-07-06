@@ -13,6 +13,7 @@ import { ProductModule } from './product/product.module';
 import { Product } from './product/entities/product.entity';
 import { CategoryModule } from './category/category.module';
 import { Category } from './category/entities/category.entity';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { Category } from './category/entities/category.entity';
     }),
     ProductModule,
     CategoryModule,
+    SharedModule,
     // MailerModule.forRootAsync({
     //   imports: [ConfigModule],
     //   useFactory: (configService: ConfigService) => ({

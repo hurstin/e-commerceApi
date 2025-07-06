@@ -80,7 +80,7 @@ export class ProductService {
       products: product,
     }; // % wildcards for partial match
   }
-
+  // REMINDER: CHECK IF THE CATEGORY BEEN UPDATED TO EXISTS
   async update(id: number, updateProductDto: UpdateProductDto) {
     if (!id || !updateProductDto)
       throw new BadRequestException(

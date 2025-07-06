@@ -11,10 +11,14 @@ import {
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { ProductCategoryService } from 'src/shared/productCategory.service';
 
 @Controller('category')
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(
+    private readonly categoryService: CategoryService,
+    private productCategoryService: ProductCategoryService,
+  ) {}
 
   @Post('create')
   create(@Body() createCategoryDto: CreateCategoryDto) {
@@ -39,7 +43,7 @@ export class CategoryController {
     return this.categoryService.update(+id, updateCategoryDto);
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.categoryService.remove(+id);
   }
